@@ -1,14 +1,15 @@
 module Crawler
   class OrderTrackService
-    attr_reader :aliexpress, :browser, :log
+    attr_reader :aliexpress, :browser, :log, :order
 
-    def initialize(aliexpress, browser, logger)
-      @aliexpress = aliexpress
+    def initialize(order, browser, logger)
+      @order = order
+      @aliexpress = order.crawler.aliexpress
       @browser = browser
       @log = logger
     end
 
-    def track_order(order)
+    def track!
       puts "========= Authenticate user for track an order"
 
       login
@@ -42,10 +43,6 @@ module Crawler
 
     def open_order_page(order_number)
       @browser.goto build_order_url(order_number)
-    end
-
-    def notify_wordpress(order_number, tracking_number)
-      #update_tracking_number_note
     end
 
   end
