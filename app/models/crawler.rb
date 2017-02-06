@@ -3,6 +3,7 @@ class Crawler < ActiveRecord::Base
   belongs_to :wordpress
   validates :aliexpress_id, :wordpress_id, presence: true
   has_many :crawler_logs, dependent: :destroy
+  has_many :orders, dependent: :destroy
 
   def run(orders)
     raise "Não há pedidos a serem executados" if orders.nil? || orders.count == 0
@@ -349,6 +350,7 @@ class Crawler < ActiveRecord::Base
       raise "Erro com numero do pedido vazio\n"+self.wordpress.error
     else
       self.wordpress.update_order(order, ali_order_num)
+      Order.track crawler: self, aliexpress_number: ali_order_num, wordpress_reference: order["id"]
       puts "Pedido #{order["id"]} processado com sucesso! Pedido aliexpress: #{ali_order_num}"
       @log.add_processed("Pedido #{order["id"]} processado com sucesso! Pedido aliexpress: #{ali_order_num}")
     end
