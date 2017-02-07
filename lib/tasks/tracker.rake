@@ -8,7 +8,7 @@ namespace :tracker do
 
     orders = Order.untracked
     orders.each do |order|
-      tracking_service = Crawler::OrderTrackService.new(order, @browser, OrderLog.new)
+      tracking_service = Crawlers::OrderTrackService.new(order, @browser, OrderLog.new)
       tracking_service.track!
     end
 

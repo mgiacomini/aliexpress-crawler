@@ -1,4 +1,4 @@
-module Crawler
+module Crawlers
   class AuthenticationService
     attr_reader :aliexpress, :browser
 
